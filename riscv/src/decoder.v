@@ -68,4 +68,16 @@ module Decoder (
     assign pc_change_value = pc + imm;
     assign pc_unselected_value = pred_res ? pc + 4 : pc + imm;
 
+    // always @(posedge clk_in) begin
+    //     if (rst_in) begin
+
+    //     end
+    //     else if (rdy_in) begin
+    //             $display("here: %h, %d %h", inst, pc, pc);
+    //         if (fetch_ready && issue_ready) begin
+    //              $display("inst: %h, %d %h", inst, pc, pc);
+    //         end
+    //     end
+    // end
+
 endmodule

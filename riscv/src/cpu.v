@@ -162,7 +162,7 @@ Cache cache (
     .mem_a(mem_a),
     .mem_wr(mem_wr),
 
-    .i_waiting(i_waiting),
+    .i_waiting(1'b1),
     .i_addr(pc),
 
     .i_result(i_result),
@@ -275,7 +275,7 @@ Decoder decoder (
     .funct7(funct7),
     .imm(imm),
 
-    .pred_res(pred_res),
+    .pred_res(1'b0),
     .pc_change_flag(decoder_pc_change_flag),
     .pc_change_value(decoder_pc_change_value),
     .pc_unselected_value(pc_unselected_value)

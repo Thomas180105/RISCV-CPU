@@ -24,6 +24,15 @@ module InstructionFetch (
     assign inst_out = inst_in;
     assign pc_out = pc;
 
+
+    // always @(posedge clk_in) begin
+    //     $display("rdy_in=%b, RoB_clear=%b, pc_change_flag=%b, stall=%b, ready_in=%b",rdy_in, RoB_clear, pc_change_flag, stall, ready_in);
+    // end
+
+    // always @(posedge clk_in) begin
+    //     $display("pc=%h", pc);
+    // end
+
     always @(posedge clk_in) begin
         if (rst_in) begin            
             pc <= 0;

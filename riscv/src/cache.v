@@ -37,7 +37,7 @@ module Cache (
 
     //memory controller
     reg m_wr;  
-    wire m_waiting = d_waiting || (i_hit ? 0 : i_waiting);
+    wire m_waiting = d_waiting || (i_hit ? 0 : i_waiting);// i.e d_waiting || !i_hit (since i_waiting eq 1 all the time)
     wire m_ready; 
     wire [31:0] m_res;  // result of read operation  
     reg [2:0] m_len;  
@@ -48,6 +48,10 @@ module Cache (
     assign i_result = i_hit ? i_res : m_res;
     assign i_wr = !d_waiting && state && m_ready && (i_addr == current_addr);
     assign i_ready = !d_waiting && (current_addr == i_addr) && (i_hit || (m_ready && !m_waiting));
+
+    // always @(posedge clk_in) begin
+    //     $display("i_ready=%b,d_waiting=%b, current_addr=%h, i_addr=%h, d_addr=%h, i_hit=%b, m_ready=%b, m_waiting=%b, i_waiting=%b",i_ready, d_waiting, current_addr, i_addr, d_addr, i_hit, m_ready, m_waiting, i_waiting);
+    // end
 
     //data cache
     assign d_result = m_res;
@@ -103,7 +107,15 @@ module Cache (
         else if (rdy_in) begin
             case (state)
                 1'b0: begin 
-                    if (i_waiting) begin
+                    if (d_waiting) begin 
+                        state <= 1;
+                        m_wr <= d_wr;
+                        m_len <= d_len;
+                        m_addr <= d_addr;
+                        m_value <= d_value;
+                        current_addr <= d_addr;
+                    end
+                    else if (i_waiting) begin // note that this is "else if" not "if"!
                         if (i_hit) begin
                             current_addr <= i_addr;
                         end
@@ -116,14 +128,6 @@ module Cache (
                             current_addr <= i_addr;
                         end
                     end                      
-                    else if (d_waiting) begin // note that this is "else if" not "if"!
-                        state <= 1;
-                        m_wr <= d_wr;
-                        m_len <= d_len;
-                        m_addr <= d_addr;
-                        m_value <= d_value;
-                        current_addr <= d_addr;
-                    end
                 end
                 1'b1: begin                  
                     if (m_ready) begin
