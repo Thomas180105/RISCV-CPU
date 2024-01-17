@@ -46,7 +46,8 @@ module cpu(
 //   end
 
 
-wire strict_rdy_in = rdy_in && !io_buffer_full;
+// wire strict_rdy_in = rdy_in && !io_buffer_full;
+wire strict_rdy_in = rdy_in;
 wire i_ready;
 wire fetch_ready;
 wire [31:0] inst;
