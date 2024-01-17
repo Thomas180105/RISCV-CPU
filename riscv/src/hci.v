@@ -202,7 +202,7 @@ uart #(.SYS_CLK_FREQ(SYS_CLK_FREQ),
   .parity_err(parity_err)
 );
 
-always @*
+always @(posedge clk)
   begin
     d_io_dout = 8'h00;
     if (io_en & !io_wr)
@@ -217,7 +217,7 @@ always @*
       end
   end
 
-always @*
+always @(posedge clk)
   begin
     // Setup default FF updates.
     d_state        = q_state;
